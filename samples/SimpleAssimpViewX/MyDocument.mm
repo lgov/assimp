@@ -156,8 +156,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,const CVTimeS
         if (result == NSOKButton)
         {
             [openPanel orderOut:self]; // close panel before we might present an error
-        
-            if([[NSFileManager defaultManager] fileExistsAtPath:[openPanel filename]])
+
+            NSString *filepath = [[openPanel URL] path];
+            if([[NSFileManager defaultManager] fileExistsAtPath:filepath])
             {
                 // Load our new path.
 
@@ -186,8 +187,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,const CVTimeS
                 }
                 
                 // aiProcess_FlipUVs is needed for VAO / VBOs,  not sure why.
-                const char *path = [[openPanel filename] cStringUsingEncoding:[NSString defaultCStringEncoding]];
-                _scene = (aiScene*)aiImportFileExWithProperties(path,
+                _scene = (aiScene*)aiImportFileExWithProperties([filepath UTF8String],
                                                                 aiPostProccesFlags | aiProcess_Triangulate | aiProcess_FlipUVs |
                                                                 aiProcess_PreTransformVertices | 0,
                                                                 NULL,
@@ -201,7 +201,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,const CVTimeS
                     CGLContextObj cgl_ctx = (CGLContextObj)[_glContext CGLContextObj];
                     CGLLockContext(cgl_ctx);
                     
-                    [self loadTexturesInContext:cgl_ctx withModelPath:[[openPanel filename] stringByStandardizingPath]];
+                    [self loadTexturesInContext:cgl_ctx withModelPath:[filepath stringByStandardizingPath]];
                     
                     //NSDictionary* userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSValue valueWithPointer:cgl_ctx], @"context", [self.inputModelPath stringByStandardizingPath], @"path", nil ];
                     //[self performSelectorInBackground:@selector(loadTexturesInBackground:) withObject:userInfo];
