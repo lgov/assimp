@@ -8,10 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/OpenGL.h>
-#import "aiColor4D.h"
-#import "aiVector3D.h"
-#import "aiVector2D.h"
-#import "aiMatrix4x4.h"
+#import <assimp/color4.h>
+#import <assimp/vector3.h>
+#import <assimp/vector2.h>
+#import <assimp/matrix4x4.h>
 
 /* workflow:
 

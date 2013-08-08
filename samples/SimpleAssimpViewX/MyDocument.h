@@ -10,9 +10,9 @@
 #import "ModelLoaderHelperClasses.h"
 
 // assimp include files. These three are usually needed.
-#import "assimp.h"
-#import "aiPostProcess.h"
-#import "aiScene.h"
+#include <assimp/cimport.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/OpenGL.h>
@@ -29,7 +29,7 @@
     
     // Assimp Stuff
     aiScene* _scene;
-    struct aiVector3D scene_min, scene_max, scene_center;
+    aiVector3D scene_min, scene_max, scene_center;
     double normalizedScale;    
     
     // Our array of textures.
@@ -53,7 +53,7 @@
 - (void) deleteGLResourcesInContext:(CGLContextObj)cgl_ctx;
 
 - (void) loadTexturesInContext:(CGLContextObj)cgl_ctx withModelPath:(NSString*) modelPath;
-- (void) getBoundingBoxWithMinVector:(struct aiVector3D*) min maxVectr:(struct aiVector3D*) max;
-- (void) getBoundingBoxForNode:(const struct aiNode*)nd  minVector:(struct aiVector3D*) min maxVector:(struct aiVector3D*) max matrix:(struct aiMatrix4x4*) trafo;
+- (void) getBoundingBoxWithMinVector:(aiVector3D*) min maxVectr:(aiVector3D*) max;
+- (void) getBoundingBoxForNode:(const aiNode*)nd  minVector:(aiVector3D*) min maxVector:(aiVector3D*) max matrix:(aiMatrix4x4*) trafo;
 
 @end
