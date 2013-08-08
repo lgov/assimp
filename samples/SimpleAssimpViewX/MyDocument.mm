@@ -187,14 +187,14 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,const CVTimeS
                 }
                 
                 // aiProcess_FlipUVs is needed for VAO / VBOs,  not sure why.
-                _scene = (aiScene*)aiImportFileExWithProperties([filepath UTF8String],
-                                                                aiPostProccesFlags | aiProcess_Triangulate | aiProcess_FlipUVs |
-                                                                aiProcess_PreTransformVertices | 0,
-                                                                NULL,
-                                                                propertyStore);
-                
+                _scene = aiImportFileExWithProperties([filepath UTF8String],
+                                                      aiPostProccesFlags | aiProcess_Triangulate | aiProcess_FlipUVs |
+                                                      aiProcess_PreTransformVertices | 0,
+                                                      NULL,
+                                                      propertyStore);
+
                 if (_scene)
-                {       
+                {
                     textureDictionary = [[NSMutableDictionary alloc] initWithCapacity:5];
                     
                     // Why do I need to cast this !?

@@ -28,7 +28,7 @@
     NSView* _view;
     
     // Assimp Stuff
-    aiScene* _scene;
+    const aiScene* _scene;
     aiVector3D scene_min, scene_max, scene_center;
     double normalizedScale;    
     
