@@ -104,9 +104,13 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,const CVTimeS
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     glDepthMask(GL_TRUE);
-    
-    glEnable(GL_NORMALIZE);
-    glEnable(GL_TEXTURE_2D);
+
+    /* We can use GL_RESCALE_NORMAL because all scaling is done uniformily in
+       all directions. */
+    glEnable(GL_RESCALE_NORMAL);
+
+    /* Not needed anymore in OpenGL 3.0 and OpenGL ES 2.0. */
+    /* glEnable(GL_TEXTURE_2D); */
 
     glShadeModel(GL_SMOOTH);
     
@@ -716,7 +720,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,const CVTimeS
             [textureImage unlockFocus];
             
             glActiveTexture(GL_TEXTURE0);
-            glEnable(GL_TEXTURE_2D);
+            glEnable(GL_TEXTURE_2D); /* but here it's still needed?? */
             glBindTexture(GL_TEXTURE_2D, textureIds[i]);
             //glPixelStorei(GL_UNPACK_ROW_LENGTH, [bitmap pixelsWide]);
             //glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
