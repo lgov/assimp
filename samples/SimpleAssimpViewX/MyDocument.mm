@@ -10,6 +10,8 @@
 #import <assimp/cimport.h>
 
 #import "MyDocument.h"
+#import "MyView.h"
+
 #import <OpenGL/CGLMacro.h>
 
 #pragma mark -
@@ -84,7 +86,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,const CVTimeS
     _glContext = [[NSOpenGLContext alloc] initWithFormat:_glPixelFormat shareContext:nil];
     
     const GLint one = 1;
-    
+
     [_glContext setValues:&one forParameter:NSOpenGLCPSwapInterval];
     [_glContext setView:_view];
 
@@ -308,11 +310,12 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,const CVTimeS
         glTranslated( -scene_center.x, -scene_center.y, -scene_center.z);    
         
         glScaled(2.0, 2.0, 2.0);
-        
-        static float i = 0;
-        i+=0.5;
-        glRotated(i, 0, 1, 0);
-        
+
+        /* rotation of imaginary sphere in x direction, around y axis */
+        glRotated(rad_x, 0.0, 1.0, 0.0);
+        /* rotation of imaginary sphere in y direction, around x axis */
+        glRotated(rad_y, 1.0, 0.0, 0.0);
+
         [self drawMeshesInContext:cgl_ctx];
     }
 
@@ -321,8 +324,24 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,const CVTimeS
     CGLFlushDrawable(cgl_ctx);
 }
 
+
+
+- (void)rotate:(float)arc_x
+         arc_y:(float)arc_y
+{
+    const double pi = 3.1415926535897932384626433832795;
+    const double radius = 100.0;
+    const double circ = 2 * pi * radius;
+
+    /* Mouse events are used as the length of the arc on an imaginary sphere
+       of RADIUS in x and y directions around the surface of that sphere. */
+    rad_x += arc_x * ( 360.0 / circ);
+    rad_y += arc_y * ( 360.0 / circ);
+}
+
+
 #pragma mark -
-#pragma mark Loading 
+#pragma mark Loading
 
 // Inspired by LoadAsset() & CreateAssetData() from AssimpView D3D project
 - (void) createGLResourcesInContext:(CGLContextObj)cgl_ctx
@@ -814,6 +833,5 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,const CVTimeS
     
 	*trafo = prev;
 }
-
 
 @end
